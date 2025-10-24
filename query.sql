@@ -1,4 +1,4 @@
--- PARAMETROS QUE VÃO SER INSERIDOS NA CHAMADA DA PROCEDURE: nome do curso e nome do aluno.
+-- PARAMETROS QUE VÃO SER INSERIDOS NA CHAMADA DA PROCEDURE: NOME DO CURSO E NOME DO ALUNO.
 CREATE OR REPLACE PROCEDURE sp_matricula_aluno_teste(
 	p_nome_aluno VARCHAR,
 	p_nome_curso VARCHAR
@@ -39,14 +39,17 @@ WHERE nome = p_nome_curso;
 RAISE NOTICE 'Matricula do aluno: %', var_matricula_aluno;
 RAISE NOTICE 'Sigla do curso: %', var_curso;
 
+--VERIFICANDO SE O ALUNO JÁ FOI MATRICULADO
 SELECT COUNT(matricula) INTO var_qtd_linhas_materias FROM
 matricula
 WHERE matricula = var_matricula_aluno;
+
 
 IF var_qtd_linhas_materias > 0 THEN
 	RAISE EXCEPTION 'Aluno já matriculado!';
 ELSE
 
+--VERIFICANDO AS MATÉRIAS DO CURSO E FAZENDO A MATRÍCULA DO ALUNO EM CADA MATÉRIA
 	FOR var_materias IN
 	        SELECT sigla FROM materias
 			WHERE curso = var_curso
